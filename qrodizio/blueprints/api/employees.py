@@ -1,12 +1,12 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, abort
+
+from qrodizio.models import Employee
 
 employees_bp = Blueprint("employees", __name__, url_prefix="/employees")
 
 @employees_bp.route("/", methods=["GET"])
 def get_employees():
-    employees = [
-        {"id": 1, "name": "Fulano", "email": "fulano@email.com"},
-        {"id": 2, "name": "Ciclano", "email": "ciclano@email.com"},
-    ]
+    employees_query = Employee.query.all() or abort(204)
+    employees = [employee.to_dict() for employee in employees_query]
 
     return jsonify({"employees": employees}), 200

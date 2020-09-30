@@ -9,6 +9,7 @@ pip-log.txt
 .coverage
 .coverage.*
 .pytest_cache/
+*.db
 
 # Mr Developer
 .vscode/

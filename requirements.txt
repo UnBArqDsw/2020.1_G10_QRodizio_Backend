@@ -1,3 +1,5 @@
-Flask
-dynaconf
 python-dotenv
+dynaconf
+Flask
+Flask-SQLAlchemy
+SQLAlchemy-serializer

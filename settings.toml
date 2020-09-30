@@ -1,10 +1,14 @@
 [default]
 DEBUG = false
 SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+SQLALCHEMY_TRACK_MODIFICATIONS = false
 TITLE = "QRodizio"
 SECRET_KEY = "this-is-super-secret!"
 
 EXTENSIONS = [
+    "qrodizio.ext.database:init_app",
+    "qrodizio.ext.commands:init_app",
+
     "qrodizio.blueprints.api:init_app",
 ]
 

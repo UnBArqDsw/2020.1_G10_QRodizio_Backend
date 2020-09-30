@@ -1,0 +1,3 @@
+Flask
+dynaconf
+python-dotenv

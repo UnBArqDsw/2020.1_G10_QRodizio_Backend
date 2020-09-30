@@ -1,0 +1,16 @@
+# python cache
+__pycache__/
+*.pyc
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.coverage.*
+.pytest_cache/
+
+# Mr Developer
+.vscode/
+.venv
+venv/

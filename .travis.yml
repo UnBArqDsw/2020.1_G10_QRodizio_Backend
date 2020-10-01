@@ -1,0 +1,10 @@
+language: python
+python:
+  - "3.8"
+
+install:
+  - make install
+
+script:
+  - pytest
+  - coverage report

@@ -1,5 +1,5 @@
 from qrodizio.ext.database import db
-from qrodizio.models import Employee
+from qrodizio.populate_data import get_employees
 
 
 def create_db():
@@ -13,16 +13,11 @@ def drop_db():
 
 
 def populate_db():
-    """Populate db with sample data"""
-    data = [
-        Employee(name="Fulano", email="fulano@email.com", password="fulano"),
-        Employee(name="Ciclano", email="ciclano@email.com", password="ciclano"),
-    ]
+    """Populate db with employees sample data"""
+    employees = get_employees()
 
-    db.session.bulk_save_objects(data)
+    db.session.bulk_save_objects(employees)
     db.session.commit()
-
-    return Employee.query.all()
 
 
 def init_app(app):

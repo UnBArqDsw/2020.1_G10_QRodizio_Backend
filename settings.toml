@@ -8,6 +8,7 @@ SECRET_KEY = "this-is-super-secret!"
 EXTENSIONS = [
     "qrodizio.ext.database:init_app",
     "qrodizio.ext.commands:init_app",
+    "qrodizio.ext.cors:init_app",
 
     "qrodizio.blueprints.api:init_app",
 ]

@@ -19,6 +19,7 @@ EXTENSIONS = [
 #    "dynaconf_merge_unique"  # to reuse extensions list from [default]
 #]
 DEBUG = true
+SQLALCHEMY_DATABASE_URI = "postgres://postgres:postgres@db/qrodizio_development"
 
 [testing]
 SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'

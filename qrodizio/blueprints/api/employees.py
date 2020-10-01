@@ -7,7 +7,7 @@ employees_bp = Blueprint("employees", __name__, url_prefix="/employees")
 
 @employees_bp.route("/", methods=["GET"])
 def get_employees():
-    employees_query = Employee.query.all() or abort(204)
+    employees_query = Employee.query.all()
     employees = [employee.to_dict() for employee in employees_query]
 
     return jsonify({"employees": employees}), 200

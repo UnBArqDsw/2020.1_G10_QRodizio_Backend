@@ -8,6 +8,7 @@ pip-log.txt
 # Unit test / coverage reports
 .coverage
 .coverage.*
+coverage.xml
 .pytest_cache/
 *.db
 

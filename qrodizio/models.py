@@ -8,7 +8,7 @@ class User(db.Model):
     # created_on = db.Column(db.DateTime, default=db.func.now())
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
 
     def create(self):
         db.session.add(self)
@@ -22,5 +22,6 @@ class User(db.Model):
 
 class Employee(User, SerializerMixin):
     __tablename__ = "employees"
+    serialize_rules = ("-password",)
 
     name = db.Column(db.String(255), nullable=False)

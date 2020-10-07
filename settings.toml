@@ -1,0 +1,29 @@
+[default]
+DEBUG = false
+SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+SQLALCHEMY_TRACK_MODIFICATIONS = false
+TITLE = "QRodizio"
+SECRET_KEY = "this-is-super-secret!"
+
+EXTENSIONS = [
+    "qrodizio.ext.database:init_app",
+    "qrodizio.ext.commands:init_app",
+    "qrodizio.ext.cors:init_app",
+
+    "qrodizio.views.api:init_app",
+]
+
+
+[development]
+#EXTENSIONS = [
+#    "OTHER_EXTENSIONS_HERE",
+#    "dynaconf_merge_unique"  # to reuse extensions list from [default]
+#]
+DEBUG = true
+SQLALCHEMY_DATABASE_URI = "postgres://postgres:postgres@db/qrodizio_development"
+
+[testing]
+SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
+
+#[production]
+#SQLALCHEMY_DATABASE_URI = 'sqlite:///production.db'

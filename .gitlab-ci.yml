@@ -11,3 +11,6 @@ test:
   artifacts:
     reports:
       cobertura: coverage.xml
+
+include:
+  - template: Code-Quality.gitlab-ci.yml

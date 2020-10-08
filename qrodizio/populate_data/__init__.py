@@ -1,6 +1,7 @@
 import json
 
 from qrodizio.models import Employee
+from qrodizio.util import employee_builder
 
 
 def get_employees() -> [Employee]:
@@ -12,11 +13,7 @@ def get_employees() -> [Employee]:
 
         employees = []
         for employee_data in dummy_data["employees"]:
-            employee = Employee()
-
-            for key in employee_data.keys():
-                setattr(employee, key, employee_data[key])
-
+            employee = employee_builder(**employee_data)
             employees.append(employee)
 
     return employees

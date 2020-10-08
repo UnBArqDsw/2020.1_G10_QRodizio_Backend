@@ -17,6 +17,6 @@ def get_employees(current_employee):
 
 @employees_bp.route("/<employee_id>", methods=["GET"])
 @auth_required
-def get_single_employee(employee_id):
+def get_single_employee(current_employee, employee_id):
     employee = Employee.query.filter_by(id=employee_id).first() or abort(404)
     return jsonify(employee.to_dict()), 200

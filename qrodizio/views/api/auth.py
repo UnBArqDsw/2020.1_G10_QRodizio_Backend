@@ -2,12 +2,9 @@ import jwt
 import datetime
 
 from flask import Blueprint, jsonify, request
-from qrodizio.ext.authentication import (
-    hash_password,
-    verify_password,
-    get_secret_key,
-)
+from qrodizio.ext.authentication import verify_password, get_secret_key
 from qrodizio.models import Employee
+from qrodizio.util import employee_builder
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -24,8 +21,7 @@ def auth_register_employee():
     if Employee.query.filter_by(email=email).first() is not None:
         return jsonify({"error": "User already exists"}), 400
 
-    employee = Employee(name=name, email=email)
-    employee.password = hash_password(password)
+    employee = employee_builder(name=name, email=email, password=password)
     employee.create()
 
     return jsonify({"employee": employee.to_dict()}), 201
@@ -56,4 +52,4 @@ def auth_loggin_employee():
 
     token = jwt.encode(payload, get_secret_key())
 
-    return jsonify({"token": token.decode("utf-8")})
+    return jsonify({"token": token.decode("utf-8")}), 200

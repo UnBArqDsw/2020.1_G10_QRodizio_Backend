@@ -6,7 +6,7 @@ stages:
 test:
   stage: test
   script:
-    - make install
+    - make install_test
     - make coverage
     - bash <(curl -s https://codecov.io/bash)
   artifacts:

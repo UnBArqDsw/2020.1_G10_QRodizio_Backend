@@ -9,6 +9,11 @@ install:
 	pip install -r requirements_dev.txt
 	pip install -r requirements_test.txt
 
+install_test:
+	pip install --upgrade pip
+	pip install -r requirements.txt
+	pip install -r requirements_test.txt
+
 clean:
 	@find . -name '*.pyc' -exec rm -rf {} \;
 	@find . -name '__pycache__' -exec rm -rf {} \;
@@ -20,5 +25,3 @@ coverage:
 	coverage run -m pytest
 	coverage report
 	coverage xml
-	coverage html
-

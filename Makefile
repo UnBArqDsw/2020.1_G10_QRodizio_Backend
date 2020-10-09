@@ -15,3 +15,10 @@ clean:
 	@find . -name '*~' -exec rm -rf {} \;
 	rm -rf .cache
 	rm -rf htmlcov
+
+coverage:
+	coverage run -m pytest
+	coverage report
+	coverage xml
+	coverage html
+

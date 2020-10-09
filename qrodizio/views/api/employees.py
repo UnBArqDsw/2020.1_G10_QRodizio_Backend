@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, abort
 
-from qrodizio.models import Employee
 from qrodizio.ext.authentication import auth_required
+from qrodizio.models.users import Employee
 
 employees_bp = Blueprint("employees", __name__, url_prefix="/employees")
 

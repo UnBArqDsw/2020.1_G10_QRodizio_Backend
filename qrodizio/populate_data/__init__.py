@@ -1,7 +1,7 @@
 import json
 
-from qrodizio.models import Employee
 from qrodizio.util import employee_builder
+from qrodizio.models.users import Employee
 
 
 def get_employees() -> [Employee]:

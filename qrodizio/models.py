@@ -1,3 +1,5 @@
+import enum
+
 from sqlalchemy_serializer import SerializerMixin
 from qrodizio.ext.database import db
 
@@ -20,8 +22,14 @@ class User(db.Model):
         return "" % self.id
 
 
+class EmployeeRole(enum.Enum):
+    basic = 0
+    manager = 1
+
+
 class Employee(User, SerializerMixin):
     __tablename__ = "employees"
     serialize_rules = ("-password",)
 
     name = db.Column(db.String(255), nullable=False)
+    role = db.Column(db.Enum(EmployeeRole), nullable=False, default=EmployeeRole.basic)

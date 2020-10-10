@@ -5,6 +5,7 @@ from functools import wraps
 from flask import request, jsonify
 
 from qrodizio.models import Employee
+from qrodizio.models import EmployeeRole
 
 _secret_key = None
 
@@ -27,29 +28,89 @@ def verify_password(password_hash, password):
     return hash_check.decode("utf-8") == password_hash.decode("utf-8")
 
 
-def auth_required(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        token = None
+class UserUnauthorizedException(Exception):
+    def __init__(self, status_code=401):
+        super().__init__()
+        self.status_code = status_code
 
-        if "authorization" in request.headers:
-            token = request.headers["authorization"]
 
-        if token is None:
-            return jsonify({"error": "User unauthorized"}), 401
+def _get_token_from_headers():
+    """Extracts user token from request.headers.
+    if not present or dont have a Bearer, raises an UserUnauthorizedException
+    """
+    if "authorization" not in request.headers:
+        raise UserUnauthorizedException
 
-        if "Bearer" not in token:
-            return jsonify({"error": "User unauthorized"}), 401
+    token = request.headers["authorization"]
 
-        try:
-            pure_token = token.replace("Bearer ", "")
-            decoded = jwt.decode(pure_token, get_secret_key())
-            current_employee = Employee.query.get(decoded["id"])
+    if "Bearer" not in token:
+        raise UserUnauthorizedException
 
-            return f(current_employee=current_employee, *args, **kwargs)
-        except jwt.ExpiredSignatureError:
-            return jsonify({"error": "expired token"}), 401
-        except Exception:
-            return jsonify({"error": "invalid token"}), 401
+    return token
 
-    return wrapper
+
+def _role_check(func, employee, role, *args, **kwargs):
+    """Check user permission based on its role"""
+    checker = permission_strategy_factory(role)
+
+    if checker(employee):
+        return func(current_employee=employee, *args, **kwargs)
+    else:
+        raise UserUnauthorizedException(403)
+
+
+def auth_required(role=EmployeeRole.basic):
+    """
+    Verifies if request has a valid token.
+    Then calls a permission strategy
+    """
+
+    def decorated(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            try:
+                token = _get_token_from_headers()
+
+                pure_token = token.replace("Bearer ", "")
+                decoded = jwt.decode(pure_token, get_secret_key())
+                current_employee = Employee.query.get(decoded["id"])
+
+                return _role_check(f, current_employee, role, *args, **kwargs)
+            except jwt.ExpiredSignatureError:
+                return jsonify({"error": "expired token"}), 401
+            except UserUnauthorizedException as e:
+                return jsonify({"error": "User unauthorized"}), e.status_code
+            except Exception:
+                return jsonify({"error": "invalid token"}), 401
+
+        return wrapper
+
+    return decorated
+
+
+def permission_strategy_factory(role):
+    """Given a role, returns a permission strategy for that role"""
+    if role == EmployeeRole.basic:
+        return basic_permission_strategy
+    elif role == EmployeeRole.manager:
+        return manager_permission_strategy
+    else:
+        return no_permission_strategy
+
+
+def no_permission_strategy(*args, **kwargs):
+    """No permission at all"""
+    return False
+
+
+def manager_permission_strategy(employee):
+    """Manager permission user must be a manager"""
+    if employee.role == EmployeeRole.manager:
+        return True
+
+    return False
+
+
+def basic_permission_strategy(employee):
+    """Baasic permission user just need to be logged"""
+    return True

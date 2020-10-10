@@ -2,15 +2,16 @@ import jwt
 import datetime
 
 from flask import Blueprint, jsonify, request
-from qrodizio.ext.authentication import verify_password, get_secret_key
-from qrodizio.models import Employee
+from qrodizio.ext.authentication import verify_password, get_secret_key, auth_required
+from qrodizio.models import Employee, EmployeeRole
 from qrodizio.util import employee_builder
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 @auth_bp.route("/register", methods=["POST"])
-def auth_register_employee():
+@auth_required(role=EmployeeRole.manager)
+def auth_register_employee(current_employee):
     name = request.json.get("name")
     password = request.json.get("password")
     email = request.json.get("email")

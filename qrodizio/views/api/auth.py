@@ -15,14 +15,15 @@ def auth_register_employee(current_employee):
     name = request.json.get("name")
     password = request.json.get("password")
     email = request.json.get("email")
+    role = request.json.get("role")
 
-    if None in [name, password, email]:
+    if None in [name, password, email, role]:
         return jsonify({"error": "Missing paramenter"}), 400
 
     if Employee.query.filter_by(email=email).first() is not None:
         return jsonify({"error": "User already exists"}), 400
 
-    employee = employee_builder(name=name, email=email, password=password)
+    employee = employee_builder(name=name, email=email, password=password, role=role)
     employee.create()
 
     return jsonify({"employee": employee.to_dict()}), 201

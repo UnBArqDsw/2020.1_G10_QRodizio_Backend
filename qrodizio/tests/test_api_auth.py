@@ -8,11 +8,14 @@ def test_register_new_employee(client):
     email = "newemployee@email.com"
     name = "newemployee"
     password = "newemployee"
+    role = "basic"
     user_token = get_user_token(client, "fulano@email.com", "fulano")
 
     response = client.post(
         "/auth/register",
-        data=json.dumps({"email": email, "password": password, "name": name}),
+        data=json.dumps(
+            {"email": email, "password": password, "name": name, "role": role}
+        ),
         content_type="application/json",
         headers={"Authorization": f"Bearer {user_token}"},
     )
@@ -31,11 +34,14 @@ def test_only_managers_can_register_new_employees(client):
     email = "other@email.com"
     name = "other"
     password = "other"
+    role = "basic"
 
     def dispatch_request(**headers):
         return client.post(
             "/auth/register",
-            data=json.dumps({"email": email, "password": password, "name": name}),
+            data=json.dumps(
+                {"email": email, "password": password, "name": name, "role": role}
+            ),
             content_type="application/json",
             **headers,
         )

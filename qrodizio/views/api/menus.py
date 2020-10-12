@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify, abort
+from flask import Blueprint, jsonify, abort, request
 from qrodizio.models.menus import Menu
+from qrodizio.util import menus_builder
 
 menus_bp = Blueprint("menus", __name__, url_prefix="/menus")
 
@@ -35,7 +36,17 @@ def get_single_menu(menu_id):
 
 @menus_bp.route("/", methods=["POST"])
 def create_menus():
-    return jsonify({"error": "Not Implemented"}), 501
+    name = request.json.get("name")
+    description = request.json.get("description")
+    is_daily = request.json.get("is_daily")
+    items = request.json.get("items")
+    
+
+
+    menu = menus_builder(name = name, description = description, is_daily = is_daily, items = items)
+    menu.create()
+
+    return jsonify({"menu": menu.to_dict()}), 201
 
 
 @menus_bp.route("/", methods=["PUT"])

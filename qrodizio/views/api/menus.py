@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, abort, request
 from qrodizio.models.menus import Menu
 from qrodizio.util import menus_builder
-
+from qrodizio.ext.database import db
 menus_bp = Blueprint("menus", __name__, url_prefix="/menus")
 
 
@@ -54,6 +54,9 @@ def edit_menu():
     return jsonify({"error": "Not Implemented"}), 501
 
 
-@menus_bp.route("/", methods=["DELETE"])
-def delete_menu():
-    return jsonify({"error": "Not Implemented"}), 501
+@menus_bp.route("/<int:menu_id>", methods=["DELETE"])
+def delete_menu(menu_id):
+    menu = Menu.query.get_or_404(menu_id)
+    db.session.delete(menu)
+    db.session.commit()
+    return jsonify({"sucess": "delete is working"}), 200

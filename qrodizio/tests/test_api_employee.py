@@ -1,5 +1,5 @@
 from .util import get_user_token
-from qrodizio.models import Employee
+from qrodizio.models.users import Employee
 
 
 def test_employees_get_all(client):

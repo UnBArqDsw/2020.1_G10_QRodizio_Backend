@@ -1,4 +1,4 @@
-from qrodizio.models import Employee
+from qrodizio.models.users import Employee
 from qrodizio.ext.authentication import hash_password
 
 

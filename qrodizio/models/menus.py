@@ -2,26 +2,43 @@ from sqlalchemy_serializer import SerializerMixin
 from qrodizio.ext.database import db
 
 
-class Menu(db.Model):
-    __table_args__ = {'extend_existing': True}
+association_table = db.Table(  # Define an N to N association
+    "Menu_and_Item_association",
+    db.metadata,
+    db.Column("menu_id", db.Integer, db.ForeignKey("menus.id")),
+    db.Column("item_id", db.Integer, db.ForeignKey("items.id")),
+)
+
+
+class Menu(db.Model, SerializerMixin):
+    __tablename__ = "menus"
+    serialize_rules = ("-items",)  # prevent recursion error on to_dict
 
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(255), nullable=False)
-    #types = db.relationship('Type', backref= 'menu', lazy =True)
+    name = db.Column(db.String(60), nullable=False)
+    description = db.Column(db.String(140), nullable=True)
+    is_daily = db.Column(db.Boolean, default=False)
+    items = db.relationship("Item", secondary=association_table, back_populates="menus")
 
-class Type(Menu, SerializerMixin):#Menu, SerializerMixin
-    __table_args__ = {'extend_existing': True}
- 
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
+
+        return self
+
+
+class Item(db.Model, SerializerMixin):
+    __tablename__ = "items"
+    serialize_rules = ("-menus",)  # prevent recursion error on to_dict
+
     id = db.Column(db.Integer, primary_key=True)
-    menu_id = db.Column(db.Integer, db.ForeignKey('menu.id'), nullable=False)
-    name = db.Column(db.String(50), nullable=False)
-    #itens = db.relationship('Item', backref= 'type', lazy =True)  
-      
-class Item(Type, SerializerMixin):#Type, SerializerMixin
-    __table_args__ = {'extend_existing': True}
- 
-    id = db.Column(db.Integer, primary_key=True)
-    type_id = db.Column(db.Integer, db.ForeignKey('type.id'), nullable=False)
-    name = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
+    menus = db.relationship("Menu", secondary=association_table, back_populates="items")
+    name = db.Column(db.String(80), nullable=False, unique=True, index=True)
+    description = db.Column(db.String(140), nullable=True)
     value = db.Column(db.Float(2), nullable=False)
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
+
+        return self

@@ -17,8 +17,13 @@ def employee_builder(**employee_attrs):
 def menus_builder(**menu_attrs):
     """Instantiate a Menu, setts its attributes and items"""
     menu = Menu()
-    menu.name = menu_attrs["name"]
 
+    if menu_attrs.get("id", None):
+        menu = Menu.query.get(menu_attrs["id"])
+
+    menu.name = menu_attrs["name"]
+    menu.description = menu_attrs["description"]
+    menu.is_daily = menu_attrs["is_daily"]
     for item_data in menu_attrs["items"]:
         item = _find_item_or_create_one(item_data["name"])
 

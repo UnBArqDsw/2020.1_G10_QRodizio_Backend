@@ -37,8 +37,8 @@ def get_single_menu(menu_id):
 @menus_bp.route("/", methods=["POST"])
 def create_menus():
     name = request.json.get("name")
-    description = request.json.get("description")
-    is_daily = request.json.get("is_daily")
+    description = request.json.get("description", None)
+    is_daily = request.json.get("is_daily", False)
     items = request.json.get("items")
     
 
@@ -49,9 +49,19 @@ def create_menus():
     return jsonify({"menu": menu.to_dict()}), 201
 
 
-@menus_bp.route("/", methods=["PUT"])
-def edit_menu():
-    return jsonify({"error": "Not Implemented"}), 501
+@menus_bp.route("/<int:menu_id>", methods=["PUT"])
+def edit_menu(menu_id):
+    menu = Menu.query.get_or_404(menu_id)
+    name = request.json.get("name")
+    description = request.json.get("description")
+    is_daily = request.json.get("is_daily")
+    items = request.json.get("items")
+
+    menu = menus_builder(id = menu_id, name = name, description = description, is_daily = is_daily, items = items)
+    db.session.add(menu)
+    db.session.commit()
+
+    return jsonify({"menu": menu.to_dict()}), 202
 
 
 @menus_bp.route("/<int:menu_id>", methods=["DELETE"])

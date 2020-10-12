@@ -84,3 +84,10 @@ def delete_menu(menu_id):
     db.session.commit()
     return jsonify({"sucess": "delete is working"}), 200
 
+@menus_bp.route("/<int:menu_id>/<int:item_id>", methods=["DELETE"])
+def delete_item_menu(menu_id, item_id):
+    menu = Menu.query.get_or_404(menu_id)
+    item = Item.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    return jsonify({"sucess": "delete item is working"}), 200

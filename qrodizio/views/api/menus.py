@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, abort, request
-from qrodizio.models.menus import Menu
+from qrodizio.models.menus import Menu, Item
 from qrodizio.util import menus_builder
 from qrodizio.ext.database import db
 menus_bp = Blueprint("menus", __name__, url_prefix="/menus")
@@ -48,6 +48,19 @@ def create_menus():
 
     return jsonify({"menu": menu.to_dict()}), 201
 
+@menus_bp.route("/<int:menu_id>", methods=["PUT"])
+def add_item_menu(menu_id):
+    menu = Menu.query.get_or_404(menu_id)
+    name = menu.name
+    description = menu.description
+    is_daily = menu.is_daily
+    items = request.json.get("items")
+
+    menu = menus_builder(id = menu_id, name = name, description = description, is_daily = is_daily, items = items)
+    db.session.add(menu)
+    db.session.commit()
+
+    return jsonify({"menu": menu.to_dict()}), 202
 
 @menus_bp.route("/<int:menu_id>", methods=["PUT"])
 def edit_menu(menu_id):
@@ -70,3 +83,4 @@ def delete_menu(menu_id):
     db.session.delete(menu)
     db.session.commit()
     return jsonify({"sucess": "delete is working"}), 200
+

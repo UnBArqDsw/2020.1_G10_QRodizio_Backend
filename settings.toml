@@ -9,6 +9,7 @@ EXTENSIONS = [
     "qrodizio.ext.database:init_app",
     "qrodizio.ext.commands:init_app",
     "qrodizio.ext.cors:init_app",
+    "qrodizio.ext.authentication:init_app",
 
     "qrodizio.views.api:init_app",
 ]

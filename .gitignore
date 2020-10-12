@@ -9,6 +9,7 @@ pip-log.txt
 .coverage
 .coverage.*
 coverage.xml
+htmlcov/
 .pytest_cache/
 *.db
 

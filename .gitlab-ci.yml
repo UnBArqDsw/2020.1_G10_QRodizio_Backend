@@ -6,8 +6,9 @@ stages:
 test:
   stage: test
   script:
-    - make install
-    - coverage run -m pytest && coverage report && coverage xml
+    - make install_test
+    - make coverage
+    - bash <(curl -s https://codecov.io/bash)
   artifacts:
     reports:
       cobertura: coverage.xml

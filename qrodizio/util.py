@@ -23,8 +23,9 @@ def menus_builder(**menu_attrs):
         menu = Menu.query.get(menu_attrs["id"])
 
     menu.name = menu_attrs["name"]
-    menu.description = menu_attrs["description"]
-    menu.is_daily = menu_attrs["is_daily"]
+    menu.description = menu_attrs.get("description")
+    menu.is_daily = menu_attrs.get("is_daily", False)
+
     for item_data in menu_attrs["items"]:
         item = _find_item_or_create_one(item_data["name"])
 

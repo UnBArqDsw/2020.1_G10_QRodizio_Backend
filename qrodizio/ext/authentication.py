@@ -4,8 +4,8 @@ import jwt
 from functools import wraps
 from flask import request, jsonify
 
-from qrodizio.models import Employee
-from qrodizio.models import EmployeeRole
+from qrodizio.models.users import Employee
+from qrodizio.models.users import EmployeeRole
 
 _secret_key = None
 

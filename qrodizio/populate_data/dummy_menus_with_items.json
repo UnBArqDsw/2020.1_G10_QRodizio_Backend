@@ -1,0 +1,20 @@
+{
+  "menus": [
+    {
+      "name": "Cerveja",
+      "items": [
+        { "name": "Kaizer", "description": "lata 350ml", "value": 5.0 },
+        { "name": "Brahma", "description": "lata 350ml", "value": 5.0 },
+        { "name": "Skol", "description": "lata 350ml", "value": 5.0 }
+      ]
+    },
+    {
+      "name": "Pizzas doces",
+      "items": [
+        { "name": "Morango com Chocolate", "value": 0.0 },
+        { "name": "Banofe", "value": 0.0 },
+        { "name": "Romeu e Julieta", "value": 0.0 }
+      ]
+    }
+  ]
+}

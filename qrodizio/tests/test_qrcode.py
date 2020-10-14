@@ -1,7 +1,7 @@
 def test_qr_code(client):
     """Test qrcode"""
     # Act
-    response = client.get("/qrcode")
+    response = client.get("/qrcode/")
 
     # Assert
     assert response.status_code == 200

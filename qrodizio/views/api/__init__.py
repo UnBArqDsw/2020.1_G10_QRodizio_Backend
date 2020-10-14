@@ -11,4 +11,3 @@ def init_app(app):
     app.register_blueprint(auth_bp)
     app.register_blueprint(menus_bp)
     app.register_blueprint(qrcode_bp)
-

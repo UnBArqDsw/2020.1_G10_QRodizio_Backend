@@ -1,0 +1,34 @@
+{
+  "demands": [
+    {
+      "quantity": 1,
+      "status": "waiting",
+      "customer": "O carinha que mora logo ali",
+      "item": { "name": "Morango com Chocolate", "value": 0.0 }
+    },
+    {
+      "quantity": 1,
+      "status": "processing",
+      "customer": "Berranteiro matador de onça",
+      "item": { "name": "Banofe", "value": 0.0 }
+    },
+    {
+      "quantity": 1,
+      "status": "waiting",
+      "customer": "Berranteiro matador de onça",
+      "item": { "name": "Romeu e Julieta", "value": 0.0 }
+    },
+    {
+      "quantity": 3,
+      "status": "done",
+      "customer": "O carinha que mora logo ali",
+      "item": { "name": "Kaizer", "description": "lata 350ml", "value": 5.0 }
+    },
+    {
+      "quantity": 1,
+      "status": "done",
+      "customer": "Berranteiro matador de onça",
+      "item": { "name": "Coca cola", "description": "2l", "value": 8.0 }
+    }
+  ]
+}

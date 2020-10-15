@@ -36,6 +36,7 @@ class Item(db.Model, SerializerMixin):
     name = db.Column(db.String(80), nullable=False, unique=True, index=True)
     description = db.Column(db.String(140), nullable=True)
     value = db.Column(db.Float(2), nullable=False)
+    demands = db.relationship("Demand")
 
     def create(self):
         db.session.add(self)

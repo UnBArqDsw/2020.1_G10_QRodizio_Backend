@@ -1,5 +1,6 @@
 from qrodizio.models.menus import Menu, Item
 from qrodizio.models.users import Employee
+from qrodizio.models.demand import Demand, DemandStatus, Customer
 from qrodizio.ext.authentication import hash_password
 
 
@@ -35,6 +36,22 @@ def menus_builder(**menu_attrs):
         menu.items.append(item)
 
     return menu
+
+
+def demand_builder(**demand_attrs):
+    quantity = demand_attrs.get('quantity', 1)
+    status = demand_attrs.get('status', DemandStatus.waiting)
+    customer = demand_attrs['customer']
+    
+    if demand_attrs.get('item_id', None):
+        item = Item.query.get_or_404(item_id)
+    else:
+        item_name = demand_attrs['item']['name']
+        item = Item.query.filter_by(name=item_name).first()
+
+    demand = Demand(quantity=quantity, status=status, item=item, customer=customer)
+
+    return demand
 
 
 def _find_item_or_create_one(name):

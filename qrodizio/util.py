@@ -1,6 +1,7 @@
 from qrodizio.models.menus import Menu, Item
 from qrodizio.models.users import Employee
 from qrodizio.models.demands import Demand, DemandStatus
+from qrodizio.models.tables import CostumerTable
 from qrodizio.ext.authentication import hash_password
 
 
@@ -64,3 +65,12 @@ def _find_item_or_create_one(name):
         item = Item()
 
     return item
+
+
+def costumer_tables_builder(**costumer_table_atrrs):
+    costumer_table = CostumerTable()
+
+    for key in costumer_table_atrrs.keys():
+        setattr(costumer_table, key, costumer_table_atrrs[key])
+
+    return costumer_table

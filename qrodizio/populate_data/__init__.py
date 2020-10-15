@@ -1,6 +1,6 @@
 import json
 
-from qrodizio.util import employee_builder, menus_builder
+from qrodizio.util import employee_builder, menus_builder, costumer_tables_builder
 
 
 def get_employees():
@@ -31,3 +31,17 @@ def get_menus():
             menus.append(menu)
 
     return menus
+
+
+def get_costumer_tables():
+    dummy_path = "qrodizio/populate_data/dummy_costumer_tables.json"
+
+    with open(dummy_path) as dummy_io:
+        dummy_data = json.loads(dummy_io.read())
+
+        costumer_tables = []
+        for costumer_table_data in dummy_data["costumer_tables"]:
+            costumer_table = costumer_tables_builder(**costumer_table_data)
+            costumer_tables.append(costumer_table)
+    
+    return costumer_tables

@@ -29,7 +29,10 @@ class Menu(db.Model, SerializerMixin):
 
 class Item(db.Model, SerializerMixin):
     __tablename__ = "items"
-    serialize_rules = ("-menus",)  # prevent recursion error on to_dict
+    serialize_rules = (
+        "-menus",
+        "-demands",
+    )  # prevent recursion error on to_dict
 
     id = db.Column(db.Integer, primary_key=True)
     menus = db.relationship("Menu", secondary=association_table, back_populates="items")

@@ -1,6 +1,6 @@
 import json
 
-from qrodizio.util import employee_builder, menus_builder
+from qrodizio.util import employee_builder, menus_builder, demand_builder
 
 
 def get_employees():
@@ -31,3 +31,18 @@ def get_menus():
             menus.append(menu)
 
     return menus
+
+
+def get_demands():
+    """Read data from dummy_demands.json and parses it to [Demand]"""
+    dummy_path = "qrodizio/populate_data/dummy_demands.json"
+
+    with open(dummy_path) as dummy_io:
+        dummy_data = json.loads(dummy_io.read())
+
+        demands = []
+        for demand_data in dummy_data["demands"]:
+            demand = demand_builder(**demand_data)
+            demands.append(demand)
+
+    return demands

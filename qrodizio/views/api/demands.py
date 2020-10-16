@@ -7,6 +7,7 @@ from qrodizio.ext.database import db
 demands_bp = Blueprint("demands", __name__, url_prefix="/demands")
 
 
+# TODO: temporary route while issue is under development. MUST be removed later
 @demands_bp.route("/", methods=["GET"])
 def list_all_demands():
     demand_query = Demand.query.all()
@@ -14,6 +15,13 @@ def list_all_demands():
     demands = [demand.to_dict() for demand in demand_query]
 
     return jsonify({"demands": demands}), 200
+
+
+@demands_bp.route("/status", methods=["GET"])
+def list_all_demand_status():
+    status = [d.name for d in DemandStatus]
+
+    return jsonify({"status": status}), 200
 
 
 @demands_bp.route("/<demand_status>", methods=["GET"])

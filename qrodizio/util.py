@@ -42,8 +42,9 @@ def demand_builder(**demand_attrs):
     quantity = demand_attrs.get("quantity", 1)
     status = demand_attrs.get("status", DemandStatus.waiting)
     customer = demand_attrs["customer"]
+    item_id = demand_attrs.get("item_id", None)
 
-    if demand_attrs.get("item_id", None):
+    if item_id:
         item = Item.query.get(item_id)
     else:
         item_name = demand_attrs["item"]

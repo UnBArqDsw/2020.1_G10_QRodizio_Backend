@@ -23,7 +23,7 @@ class Demand(db.Model, SerializerMixin):
     customer = db.Column(db.String(120), nullable=False)
 
     def create(self):
-        db.sessioForeignKeyn.add(self)
+        db.session.add(self)
         db.session.commit()
 
         return self

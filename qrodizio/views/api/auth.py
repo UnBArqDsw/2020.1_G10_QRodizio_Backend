@@ -29,7 +29,7 @@ def auth_register_employee(current_employee):
     return jsonify({"employee": employee.to_dict()}), 201
 
 
-@auth_bp.route("/loggin", methods=["POST"])
+@auth_bp.route("/login", methods=["POST"])
 def auth_loggin_employee():
     password = request.json.get("password")
     email = request.json.get("email")

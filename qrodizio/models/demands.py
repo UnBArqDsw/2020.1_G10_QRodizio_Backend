@@ -20,6 +20,10 @@ class Demand(db.Model, SerializerMixin):
     )
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"), nullable=False)
     item = db.relationship("Item", back_populates="demands")
+    table_id = db.Column(
+        db.Integer, db.ForeignKey("customer_tables.id"), nullable=False
+    )
+    table = db.relationship("CustomerTable", back_populates="demands")
     customer = db.Column(db.String(120), nullable=False)
 
     def create(self):

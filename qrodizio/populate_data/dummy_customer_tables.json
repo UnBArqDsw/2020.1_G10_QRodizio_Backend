@@ -1,0 +1,6 @@
+{
+  "customer_tables": [
+    { "demands": [], "qrcode": "abc" },
+    { "demands": [], "qrcode": "def" }
+  ]
+}

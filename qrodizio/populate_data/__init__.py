@@ -4,7 +4,7 @@ from qrodizio.util import (
     employee_builder,
     menus_builder,
     demand_builder,
-    costumer_tables_builder,
+    customer_tables_builder,
 )
 
 
@@ -53,15 +53,15 @@ def get_demands():
     return demands
 
 
-def get_costumer_tables():
-    dummy_path = "qrodizio/populate_data/dummy_costumer_tables.json"
+def get_customer_tables():
+    dummy_path = "qrodizio/populate_data/dummy_customer_tables.json"
 
     with open(dummy_path) as dummy_io:
         dummy_data = json.loads(dummy_io.read())
-        costumer_tables = []
+        customer_tables = []
 
-        for costumer_table_data in dummy_data["costumer_tables"]:
-            costumer_table = costumer_tables_builder(**costumer_table_data)
-            costumer_tables.append(costumer_table)
+        for costumer_table_data in dummy_data["customer_tables"]:
+            costumer_table = customer_tables_builder(**costumer_table_data)
+            customer_tables.append(costumer_table)
 
-    return costumer_tables
+    return customer_tables

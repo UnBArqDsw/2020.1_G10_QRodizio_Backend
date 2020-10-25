@@ -1,7 +1,7 @@
 from qrodizio.models.menus import Menu, Item
 from qrodizio.models.users import Employee
 from qrodizio.models.demands import Demand, DemandStatus
-from qrodizio.models.tables import CostumerTable
+from qrodizio.models.tables import CustomerTable
 from qrodizio.ext.authentication import hash_password
 
 
@@ -44,6 +44,7 @@ def demand_builder(**demand_attrs):
     status = demand_attrs.get("status", DemandStatus.waiting)
     customer = demand_attrs["customer"]
     item_id = demand_attrs.get("item_id", None)
+    table_id = demand_attrs.get("table_id", None)
 
     if item_id:
         item = Item.query.get(item_id)
@@ -52,7 +53,11 @@ def demand_builder(**demand_attrs):
         item = Item.query.filter_by(name=item_name).first()
 
     demand = Demand(
-        quantity=quantity, status=status, item_id=item.id, customer=customer
+        quantity=quantity,
+        status=status,
+        customer=customer,
+        item_id=item.id,
+        table_id=table_id,
     )
 
     return demand
@@ -67,10 +72,10 @@ def _find_item_or_create_one(name):
     return item
 
 
-def costumer_tables_builder(**costumer_table_atrrs):
-    costumer_table = CostumerTable()
+def customer_tables_builder(**customer_table_atrrs):
+    customer_table = CustomerTable()
 
-    for key in costumer_table_atrrs.keys():
-        setattr(costumer_table, key, costumer_table_atrrs[key])
+    for key in customer_table_atrrs.keys():
+        setattr(customer_table, key, customer_table_atrrs[key])
 
-    return costumer_table
+    return customer_table

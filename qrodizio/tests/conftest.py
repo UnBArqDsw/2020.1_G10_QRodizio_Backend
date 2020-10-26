@@ -1,7 +1,7 @@
 import pytest
 
 from qrodizio.app import create_app, minimal_app
-from qrodizio.ext.commands import populate_db, populate_menus
+from qrodizio.ext.commands import populate_all
 from qrodizio.ext.database import db
 
 
@@ -17,8 +17,7 @@ def app():
 
     with app.app_context():
         db.create_all(app=app)
-        populate_db()
-        populate_menus()
+        populate_all()
         yield app
         db.drop_all(app=app)
 

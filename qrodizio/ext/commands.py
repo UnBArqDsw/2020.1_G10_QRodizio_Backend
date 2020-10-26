@@ -47,6 +47,13 @@ def populate_demands():
 
 def populate_customer_tables():
     customer_tables = get_customer_tables()
+
+    for table in customer_tables:
+        table.create()  # session needs table.id
+
+        db.session.bulk_save_objects(table.sessions)
+        db.session.commit()
+
     db.session.bulk_save_objects(customer_tables)
     db.session.commit()
 

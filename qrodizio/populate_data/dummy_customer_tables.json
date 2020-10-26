@@ -1,6 +1,15 @@
 {
   "customer_tables": [
-    { "demands": [], "qrcode": "abc" },
-    { "demands": [], "qrcode": "def" }
+    {
+      "qrcode": "abc",
+      "identifier": "Mesa X",
+      "sessions": [
+        {
+          "url": "1-59a9639a-1778-11eb-aa36-7429afd877c3",
+          "demands": [],
+          "closed": false
+        }
+      ]
+    }
   ]
 }

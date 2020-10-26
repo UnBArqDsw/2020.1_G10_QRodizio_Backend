@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, abort, request
 from qrodizio.ext.database import db
-from qrodizio.models.tables import CustomerTable
+from qrodizio.models.tables import CustomerTable, TableSession
 from qrodizio.util import customer_tables_builder
 
 tables_bp = Blueprint("tables", __name__, url_prefix="/tables")
@@ -9,13 +9,13 @@ tables_bp = Blueprint("tables", __name__, url_prefix="/tables")
 def _table_to_dict(customer_table):
     """parses a customer table and its clients into a dict"""
     data = customer_table.to_dict()
-    demands = [demand.to_dict() for demand in customer_table.demands]
 
-    for demand in demands:
-        del demand["table"]
-        del demand["table_id"]
+    sessions = TableSession.query.filter_by(table_id=customer_table.id)
+    last_session = sessions.order_by(TableSession.id.desc()).first()
 
-    data["demands"] = demands
+    data["last_session"] = last_session.to_dict()
+    del data["last_session"]["table"]
+    data["total_demands"] = len(last_session.demands)
 
     return data
 

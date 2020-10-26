@@ -4,7 +4,7 @@ import datetime
 from flask import Blueprint, jsonify, request
 from qrodizio.ext.authentication import verify_password, get_secret_key, auth_required
 from qrodizio.models.users import Employee, EmployeeRole
-from qrodizio.util import employee_builder
+from qrodizio.builders import employee_builder
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 

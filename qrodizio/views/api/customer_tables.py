@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, abort, request
 from qrodizio.ext.database import db
 from qrodizio.models.tables import CustomerTable, TableSession
-from qrodizio.util import customer_tables_builder
+from qrodizio.builders import customer_tables_builder
 
 tables_bp = Blueprint("tables", __name__, url_prefix="/tables")
 

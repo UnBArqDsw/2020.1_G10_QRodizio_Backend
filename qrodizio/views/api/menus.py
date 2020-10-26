@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, abort, request
 from qrodizio.models.menus import Menu, Item
-from qrodizio.util import menus_builder
+from qrodizio.builders import menus_builder
 from qrodizio.ext.database import db
 
 menus_bp = Blueprint("menus", __name__, url_prefix="/menus")

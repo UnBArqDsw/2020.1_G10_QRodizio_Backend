@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, abort, request
 from qrodizio.ext.authentication import auth_required
 from qrodizio.models.demands import Demand, DemandStatus
-from qrodizio.util import demand_builder
+from qrodizio.builders import demand_builder
 from qrodizio.ext.database import db
 
 

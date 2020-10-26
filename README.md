@@ -1,5 +1,7 @@
 # QRodizio Backend
 
+[![](https://img.shields.io/gitlab/pipeline/fabio1079/2020-1_G10_QRodizio_Backend/master?style=flat-square)](https://gitlab.com/fabio1079/2020-1_G10_QRodizio_Backend) [![](https://img.shields.io/gitlab/pipeline/fabio1079/2020-1_G10_QRodizio_Backend/master?label=build%20develop&style=flat-square)](https://gitlab.com/fabio1079/2020-1_G10_QRodizio_Backend) [![codecov](https://codecov.io/gl/fabio1079/2020-1_G10_QRodizio_Backend/branch/develop/graph/badge.svg)](https://codecov.io/gl/fabio1079/2020-1_G10_QRodizio_Backend)
+
 **Número do Grupo**: 10<br>
 **Código da Disciplina**: FGA0208-T01<br>
 

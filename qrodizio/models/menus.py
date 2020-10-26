@@ -29,13 +29,17 @@ class Menu(db.Model, SerializerMixin):
 
 class Item(db.Model, SerializerMixin):
     __tablename__ = "items"
-    serialize_rules = ("-menus",)  # prevent recursion error on to_dict
+    serialize_rules = (
+        "-menus",
+        "-demands",
+    )  # prevent recursion error on to_dict
 
     id = db.Column(db.Integer, primary_key=True)
     menus = db.relationship("Menu", secondary=association_table, back_populates="items")
     name = db.Column(db.String(80), nullable=False, unique=True, index=True)
     description = db.Column(db.String(140), nullable=True)
     value = db.Column(db.Float(2), nullable=False)
+    demands = db.relationship("Demand")
 
     def create(self):
         db.session.add(self)

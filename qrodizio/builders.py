@@ -2,6 +2,7 @@ from qrodizio.models.menus import Menu, Item
 from qrodizio.models.users import Employee
 from qrodizio.models.demands import Demand, DemandStatus
 from qrodizio.models.tables import CustomerTable, TableSession
+from qrodizio.models.payments import PaymentsDemand
 from qrodizio.ext.authentication import hash_password
 
 
@@ -42,7 +43,6 @@ def menus_builder(**menu_attrs):
 def demand_builder(**demand_attrs):
     quantity = demand_attrs.get("quantity", 1)
     status = demand_attrs.get("status", DemandStatus.waiting)
-    customer = demand_attrs["customer"]
     item_id = demand_attrs.get("item_id", None)
     session_id = demand_attrs.get("session_id", None)
 
@@ -55,7 +55,6 @@ def demand_builder(**demand_attrs):
     demand = Demand(
         quantity=quantity,
         status=status,
-        customer=customer,
         item_id=item.id,
         session_id=session_id,
     )
@@ -90,3 +89,22 @@ def customer_tables_builder(**customer_table_atrrs):
         setattr(customer_table, key, customer_table_atrrs[key])
 
     return customer_table
+
+def paymentsDemand_builder(**table_payment_atrrs):
+    table_payment = PaymentsDemand()
+
+    payments_data = table_payment_atrrs["table_payment"]
+    del customer_table_atrrs["demand"]
+
+    for payment_data in payments_data():
+        demand = Demand()
+        for key in payment_data["demand"]:
+            setattr(demand, key, payment_data["demand"][key])
+
+        table_payment.append(demand)
+
+    for key in table_payment_atrrs.keys():
+        setattr(table_payment, key, table_payment_atrrs[key])
+    
+    return table_payment
+         

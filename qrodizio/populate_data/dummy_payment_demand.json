@@ -1,33 +1,32 @@
 {
-  "table_payment": {
-    
+  "table_payment": [
+    {  
       "customer_payment":[
         {
           "payMethod": "cartao de credito",
           "quantity": 1,
-          "demand":[{
+          "demand":{
             "item_id": 1,
             "session_id": 1            
-          }]
+          }
         },
         {
           "payMethod": "cartao de credito",
           "quantity": 1,
-          "demand":[{
+          "demand":{
             "item_id": 1,
             "session_id": 2            
-          }]
+          }
         },
         {
           "payMethod": "cartao de credito",
           "quantity": 1,
-          "demand":[
-            {
+          "demand":{
             "item_id": 1,
             "session_id": 3            
-            }
-          ]
+          }
         }
       ]
     }     
+  ]
 }

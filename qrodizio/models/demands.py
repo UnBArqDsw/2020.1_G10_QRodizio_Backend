@@ -2,7 +2,7 @@ import enum
 
 from qrodizio.ext.database import db
 from sqlalchemy_serializer import SerializerMixin
-
+from qrodizio.models.payments import PaymentsDemand
 
 class DemandStatus(enum.Enum):
     waiting = 0
@@ -25,7 +25,9 @@ class Demand(db.Model, SerializerMixin):
     )
     table_session = db.relationship("TableSession", back_populates="demands")
     customer = db.Column(db.String(120), nullable=False)
-
+    demands = db.Column(
+        db.Integer, db.ForeignKey("paymentsDemand.id"), nullable=False
+    )
     def create(self):
         db.session.add(self)
         db.session.commit()

@@ -1,0 +1,30 @@
+{
+  "table_payment": [
+    {  
+      "costumer_payment":[
+        {
+          "payMethod": "cartao de credito",
+          "quantity": 1,
+          "customer": "O carinha que mora logo ali",
+          "item": "Morango com Chocolate",
+          "value": 5.50
+        },
+        {
+          "payMethod": "cartao de credito",
+          "quantity": 4,
+          "customer": "outra pessoa",
+          "item": "calabreza",
+          "value": 32.00
+        },
+        {
+          "payMethod": "dinheiro",
+          "quantity": 3,
+          "customer": "fulano",
+          "item": "moda da casa",
+          "value": 15.50
+
+        }
+      ]
+    }     
+  ]
+}

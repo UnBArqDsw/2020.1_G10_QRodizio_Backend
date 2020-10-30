@@ -3,7 +3,7 @@ import json
 
 def get_user_token(client, email, password):
     response = client.post(
-        "/auth/loggin",
+        "/auth/login",
         data=json.dumps({"email": email, "password": password}),
         content_type="application/json",
     )

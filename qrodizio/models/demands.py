@@ -20,12 +20,14 @@ class Demand(db.Model, SerializerMixin):
     )
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"), nullable=False)
     item = db.relationship("Item", back_populates="demands")
+    
     session_id = db.Column(
         db.Integer, db.ForeignKey("tables_sessions.id"), nullable=False
     )
     table_session = db.relationship("TableSession", back_populates="demands")
-    customer = db.Column(db.String(120), nullable=False)
-    demands = db.Column(
+    
+
+    payment_id = db.Column(
         db.Integer, db.ForeignKey("paymentsDemand.id"), nullable=False
     )
     def create(self):

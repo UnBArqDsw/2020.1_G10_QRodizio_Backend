@@ -23,8 +23,8 @@ class PaymentsDemand(db.Model, SerializerMixin):
 
         return self
   
-# class CostumerPayment(db.Model, SerializerMixin):
-#     __tablename__ = "costumer_payment"
+# class customerPayment(db.Model, SerializerMixin):
+#     __tablename__ = "customer_payment"
 
 #     id = db.Column(db.Integer, primary_key=True)
 #     payMethod = db.Column(db.String(80), nullable=False)

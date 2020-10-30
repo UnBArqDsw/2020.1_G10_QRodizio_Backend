@@ -45,7 +45,7 @@ def demand_builder(**demand_attrs):
     status = demand_attrs.get("status", DemandStatus.waiting)
     item_id = demand_attrs.get("item_id", None)
     session_id = demand_attrs.get("session_id", None)
-
+    
     if item_id:
         item = Item.query.get(item_id)
     else:
@@ -57,6 +57,7 @@ def demand_builder(**demand_attrs):
         status=status,
         item_id=item.id,
         session_id=session_id,
+        
     )
 
     return demand
@@ -90,21 +91,11 @@ def customer_tables_builder(**customer_table_atrrs):
 
     return customer_table
 
-def paymentsDemand_builder(**table_payment_atrrs):
+def payments_demand_builder(**table_payment_atrrs):
     table_payment = PaymentsDemand()
 
-    payments_data = table_payment_atrrs["table_payment"]
-    del customer_table_atrrs["demand"]
-
-    for payment_data in payments_data():
-        demand = Demand()
-        for key in payment_data["demand"]:
-            setattr(demand, key, payment_data["demand"][key])
-
-        table_payment.append(demand)
-
-    for key in table_payment_atrrs.keys():
-        setattr(table_payment, key, table_payment_atrrs[key])
+    table_payment.table_id = table_payment_atrrs["table_id"] 
+    table_payment.pay_method = table_payment_atrrs["pay_method"] 
+    table_payment.session_id = table_payment_atrrs["session_id"]
     
     return table_payment
-         

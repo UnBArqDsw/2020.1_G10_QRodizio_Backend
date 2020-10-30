@@ -5,7 +5,7 @@ from qrodizio.builders import (
     menus_builder,
     demand_builder,
     customer_tables_builder,
-    paymentsDemand_builder,
+    payments_demand_builder,
 )
 
 
@@ -67,13 +67,15 @@ def get_customer_tables():
 
     return customer_tables
 
-def get_paymentsDemand():
+def get_payments_demand():
     dummy_path = "qrodizio/populate_data/dummy_payment_tables.json"
 
     with open(dummy_path) as dummy_io:
         dummy_data = json.loads(dummy_io.read())
-        table_payment = []
+        table_payments = []
 
-        for table_payment_data in dummy_data["table_payment"]["customer_payment"]:
-            table_payment = paymentsDemand_builder(**table_payment_data)
-            table_payments.append(table_payment)
+        for table_payment_data in dummy_data["payments_demands"]:
+            payment = payments_demand_builder(**table_payment_data)
+            table_payments.append(payment)
+        
+        return table_payments

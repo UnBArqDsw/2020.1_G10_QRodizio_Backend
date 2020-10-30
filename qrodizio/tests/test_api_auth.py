@@ -80,7 +80,7 @@ def test_loggin_employee_to_get_token(client):
     password = "fulano"
 
     response = client.post(
-        "/auth/loggin",
+        "/auth/login",
         data=json.dumps({"email": email, "password": password}),
         content_type="application/json",
     )

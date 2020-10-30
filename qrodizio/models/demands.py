@@ -26,10 +26,6 @@ class Demand(db.Model, SerializerMixin):
     )
     table_session = db.relationship("TableSession", back_populates="demands")
     
-
-    payment_id = db.Column(
-        db.Integer, db.ForeignKey("paymentsDemand.id"), nullable=False
-    )
     def create(self):
         db.session.add(self)
         db.session.commit()

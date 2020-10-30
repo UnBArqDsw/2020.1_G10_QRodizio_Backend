@@ -15,3 +15,15 @@ def list_all_payments():
     payments = [payment.to_dict() for payment in payment_query]
 
     return jsonify({"payments": payments}), 200
+
+@payments_bp.route("/<payment_id>", methods=["PUT"])
+def change_payMethod(payMethod, payment_id):
+    payment = PaymentsDemand.query.get_or_404(demand_id)
+    payMethod = request.json["payMethod"]
+
+    payment.payMethod = payMethod
+    db.session.add(payment)
+    db.session.commit()
+
+    return jsonify({"payment": payment.to_dict()}), 202
+

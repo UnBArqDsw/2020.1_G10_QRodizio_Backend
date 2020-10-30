@@ -1,9 +1,9 @@
 import base64
+import qrcode as qrcode_generator
 from io import BytesIO
 
 from flask import Blueprint, jsonify
 from random import randint
-
 
 
 qrcode_bp = Blueprint("qrcode", __name__, url_prefix="/qrcode")
@@ -11,11 +11,12 @@ qrcode_bp = Blueprint("qrcode", __name__, url_prefix="/qrcode")
 
 from abc import ABC, abstractmethod
 
-class Qrcode(ABC):
 
+class Qrcode(ABC):
     @abstractmethod
     def generate(self):
         pass
+
 
 class QrcodeTable(Qrcode):
     def __init__(self):
@@ -23,25 +24,29 @@ class QrcodeTable(Qrcode):
         self.image_data = None
 
     def generate(self):
-        image = qrcode.make("https://google.com.br")
+        image = qrcode_generator.make("https://google.com.br")
         buffered = BytesIO()
         image.save(buffered, format="JPEG")
-        self.image_data=base64.b64encode(buffered.getvalue()).decode("utf-8")
+        self.image_data = base64.b64encode(buffered.getvalue()).decode("utf-8")
         self.table_id = randint(0, 1000)
+
 
 class QrcodeProxy(Qrcode):
     def __init__(self):
         self.qrcode = QrcodeTable()
-        
+
     def generate(self):
-        qrcode = QrcodeProxy()
-        if(self.qrcode is not None):
-            qrcode.generate()
-            
-        qrcode.generate()
+        self.qrcode.generate()
+
+    @property
+    def image_data(self):
+        return self.qrcode.image_data
+
 
 @qrcode_bp.route("/", methods=["GET"])
 def get_qrcode():
     qrcode = QrcodeProxy()
-    some_dict["imagedata"] = base64.b64encode(buffered.getvalue()).decode("utf-8")
-    return jsonify(some_dict), 200
+    qrcode.generate()
+
+    resp = {"imagedata": qrcode.image_data}
+    return jsonify(resp), 200

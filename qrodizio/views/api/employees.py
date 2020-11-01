@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, abort
 
+from qrodizio.ext.database import db
 from qrodizio.ext.authentication import auth_required
-from qrodizio.models.users import Employee
+from qrodizio.models.users import Employee, EmployeeRole
 
 employees_bp = Blueprint("employees", __name__, url_prefix="/employees")
 
@@ -20,3 +21,14 @@ def get_employees(current_employee):
 def get_single_employee(current_employee, employee_id):
     employee = Employee.query.filter_by(id=employee_id).first() or abort(404)
     return jsonify(employee.to_dict()), 200
+
+
+@employees_bp.route("/<employee_id>", methods=["DELETE"])
+@auth_required(role=EmployeeRole.manager)
+def delete_employee(current_employee, employee_id):
+    employee = Employee.query.get_or_404(employee_id)
+
+    db.session.delete(employee)
+    db.session.commit()
+
+    return jsonify({"deleted": "employee deleted"}), 202

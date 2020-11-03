@@ -7,12 +7,21 @@ from qrodizio.ext.authentication import hash_password
 
 def employee_builder(**employee_attrs):
     """Instantiate an Employee, setts its attributes and hashes its pasword"""
-    employee = Employee()
+    if "id" in employee_attrs:
+        del employee_attrs["id"]
+
+    if "employee" in employee_attrs:
+        employee = employee_attrs["employee"]
+        del employee_attrs["employee"]
+    else:
+        employee = Employee()
+
+    if "password" in employee_attrs:
+        employee.password = hash_password(employee_attrs["password"])
+        del employee_attrs["password"]
 
     for key in employee_attrs.keys():
         setattr(employee, key, employee_attrs[key])
-
-    employee.password = hash_password(employee.password)
 
     return employee
 

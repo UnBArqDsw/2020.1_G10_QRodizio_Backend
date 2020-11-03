@@ -1,8 +1,9 @@
-from flask import Blueprint, jsonify, abort
+from flask import Blueprint, jsonify, abort, request
 
 from qrodizio.ext.database import db
 from qrodizio.ext.authentication import auth_required
 from qrodizio.models.users import Employee, EmployeeRole
+from qrodizio.builders import employee_builder
 
 employees_bp = Blueprint("employees", __name__, url_prefix="/employees")
 
@@ -32,3 +33,25 @@ def delete_employee(current_employee, employee_id):
     db.session.commit()
 
     return jsonify({"deleted": "employee deleted"}), 202
+
+
+@employees_bp.route("/<employee_id>", methods=["PUT"])
+@auth_required()
+def update_employee(current_employee, employee_id):
+    if (  # only manager can edit other employees
+        current_employee.id != employee_id
+        and current_employee.role != EmployeeRole.manager
+    ):
+        return (
+            jsonify({"error": "You're not a manager, cant edit other employees"}),
+            403,
+        )
+
+    employee = Employee.query.get_or_404(employee_id)
+
+    employee = employee_builder(employee=employee, **request.json)
+
+    db.session.add(employee)
+    db.session.commit()
+
+    return jsonify({"success": "employee updated"}), 200

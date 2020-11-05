@@ -9,7 +9,7 @@ qrcode_bp = Blueprint("qrcode", __name__, url_prefix="/qrcode")
 
 @qrcode_bp.route("/", methods=["GET"])
 def get_qrcode():
-    image = qrcode.make("https://google.com.br")
+    image = qrcode.make("http://127.0.0.1:5000/sessions")
     # img = qrcode.make('Some data here', image_factory=PymagingImage)
     buffered = BytesIO()
     image.save(buffered, format="JPEG")

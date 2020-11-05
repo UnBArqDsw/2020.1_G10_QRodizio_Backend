@@ -99,3 +99,11 @@ def payments_demand_builder(**table_payment_atrrs):
     table_payment.session_id = table_payment_atrrs["session_id"]
     
     return table_payment
+
+def tables_sessions_builder(**table_payment_atrrs):
+    table_sessions = TableSession()
+    table_sessions.url = table_payment_atrrs["url"]
+    table_sessions.closed = table_payment_atrrs["closed"]
+    table_sessions.table_id = table_payment_atrrs["table_id"]
+
+    return table_sessions

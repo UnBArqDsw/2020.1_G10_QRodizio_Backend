@@ -14,4 +14,26 @@ def socktio_employee_logged(employee):
 
     logged_employee = {"sid": request.sid, **employee}
     employee_pool.add_employee(logged_employee)
-    emit("frontend_employee_logged", logged_employee, json=True)
+
+    employees = employee_pool.get_logged_employees()
+
+    emit("frontend_current_logged_employee", employees, json=True, broadcast=True)
+
+
+@socketio.on("get_logged_employee")
+def socktio_employee_logged(employee):
+    employees = employee_pool.get_logged_employees()
+    emit("frontend_current_logged_employee", employees, json=True, broadcast=True)
+
+
+@socketio.on("employee_to_logout")
+def socktio_employee_to_logout(employee):
+    print("<>" * 80)
+    print(f"FROM: {request.sid}")
+    print("logout employee: " + str(employee))
+    print("<>" * 80)
+
+    employee_pool.remove_employee(employee["id"])
+    employees = employee_pool.get_logged_employees()
+
+    emit("frontend_current_logged_employee", employees, json=True, broadcast=True)

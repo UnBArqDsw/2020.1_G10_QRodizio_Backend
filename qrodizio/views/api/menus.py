@@ -15,6 +15,24 @@ def _menu_to_dict(menu):
     return data
 
 
+def _verify_and_update_is_daily(menu):
+    """Let only the given menu to have is_daily as true
+    any other menu with is_daily that is not false will have
+    it set to false
+    """
+    menus = Menu.query.filter_by(is_daily=True)
+    menus = [m for m in menus if m.id != menu.id]
+
+    if len(menus) == 0:
+        return
+
+    for m in menus:
+        m.is_daily = False
+
+    db.session.bulk_save_objects(menus)
+    db.session.commit()
+
+
 @menus_bp.route("/", methods=["GET"])
 def list_menus():
     menus_query = Menu.query.all()
@@ -46,6 +64,9 @@ def create_menus():
         name=name, description=description, is_daily=is_daily, items=items
     )
     menu.create()
+
+    if menu.is_daily:
+        _verify_and_update_is_daily(menu)
 
     return jsonify({"menu": _menu_to_dict(menu)}), 201
 
@@ -80,6 +101,9 @@ def edit_menu(menu_id):
     )
     db.session.add(menu)
     db.session.commit()
+
+    if menu.is_daily:
+        _verify_and_update_is_daily(menu)
 
     return jsonify({"menu": _menu_to_dict(menu)}), 202
 

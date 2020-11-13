@@ -1,6 +1,8 @@
 from sqlalchemy_serializer import SerializerMixin
 from qrodizio.ext.database import db
 
+from qrodizio.qrcode import qrcode_builder
+
 
 class TableSession(db.Model, SerializerMixin):
     __tablename__ = "tables_sessions"
@@ -25,14 +27,22 @@ class TableSession(db.Model, SerializerMixin):
 
 class CustomerTable(db.Model, SerializerMixin):
     __tablename__ = "customer_tables"
-    serialize_rules = ("-sessions",)
+    serialize_rules = (
+        "-sessions",
+        "-qrcode",
+    )
 
     id = db.Column(db.Integer, primary_key=True)
-    qrcode = db.Column(db.String(255), unique=True, nullable=False)
+    qrcode = db.Column(db.Text, nullable=True)
     identifier = db.Column(db.String(80), unique=True, nullable=False)
     sessions = db.relationship("TableSession")
 
     def create(self):
+        db.session.add(self)
+        db.session.commit()
+
+        self.qrcode = qrcode_builder(f"Table-{self.id}")
+
         db.session.add(self)
         db.session.commit()
 

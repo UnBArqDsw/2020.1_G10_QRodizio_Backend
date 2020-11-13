@@ -37,6 +37,14 @@ def get_single_customer_table(customer_table_id):
     return jsonify(_table_to_dict(table)), 200
 
 
+@tables_bp.route("/<int:customer_table_id>/qrcode", methods=["GET"])
+def get_customer_table_qrcode(customer_table_id):
+    """Get the qrcode from a table"""
+    table = CustomerTable.query.get_or_404(customer_table_id)
+
+    return jsonify({"qrcode": table.qrcode}), 200
+
+
 @tables_bp.route("/", methods=["POST"])
 def create_customer_table():
     customer_table = customer_tables_builder(**request.json)

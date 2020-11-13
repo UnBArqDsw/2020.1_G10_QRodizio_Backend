@@ -13,9 +13,11 @@ def _table_to_dict(customer_table):
     sessions = TableSession.query.filter_by(table_id=customer_table.id)
     last_session = sessions.order_by(TableSession.id.desc()).first()
 
-    data["last_session"] = last_session.to_dict()
-    del data["last_session"]["table"]
-    data["total_demands"] = len(last_session.demands)
+    if last_session:
+        data["last_session"] = last_session.to_dict()
+        del data["last_session"]["table"]
+
+    data["total_demands"] = len(last_session.demands) if last_session else 0
 
     return data
 
@@ -37,24 +39,10 @@ def get_single_customer_table(customer_table_id):
 
 @tables_bp.route("/", methods=["POST"])
 def create_customer_table():
-    customers_quantity = request.json.get("customers_quantity")
-    qrcode = request.json.get("qrcode")
-    url = request.json.get("url")
-    client = request.json.get("client")
-    status = request.json.get("status")
-    code = request.json.get("code")
-
-    customer_table = customer_tables_builder(
-        customers_quantity=customers_quantity,
-        qrcode=qrcode,
-        url=url,
-        client=client,
-        status=status,
-        code=code,
-    )
+    customer_table = customer_tables_builder(**request.json)
     customer_table.create()
 
-    return jsonify({"customer_table": _customer_table_to_dict(customer_table)}), 201
+    return jsonify({"customer_table": _table_to_dict(customer_table)}), 201
 
 
 @tables_bp.route("/<int:customer_table_id>", methods=["DELETE"])

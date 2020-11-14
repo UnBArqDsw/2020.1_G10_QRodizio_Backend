@@ -2,6 +2,7 @@ from importlib import import_module
 
 from dynaconf import FlaskDynaconf
 
+_config = {}
 
 def load_extensions(app, **config):
     for extension in app.config.EXTENSIONS:
@@ -15,3 +16,11 @@ def load_extensions(app, **config):
 
 def init_app(app, **config):
     FlaskDynaconf(app, **config)
+    global _config
+    _config = app.config
+
+
+def get_config(key):
+    global _config
+    return _config[key]
+

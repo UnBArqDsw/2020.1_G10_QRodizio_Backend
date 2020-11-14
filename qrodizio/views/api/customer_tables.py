@@ -1,17 +1,29 @@
-from flask import Blueprint, jsonify, abort, request
+from flask import Blueprint, jsonify, request, redirect
+
 from qrodizio.ext.database import db
+from qrodizio.ext.configuration import get_config
+
 from qrodizio.models.tables import CustomerTable, TableSession
-from qrodizio.builders import customer_tables_builder
+from qrodizio.builders import customer_tables_builder, table_session_builder
 
 tables_bp = Blueprint("tables", __name__, url_prefix="/tables")
+
+
+def _get_table_last_session(customer_table_id: int) -> TableSession:
+    """Given a table id, query for its last session
+    may return None
+    """
+    sessions = TableSession.query.filter_by(table_id=customer_table_id)
+    last_session = sessions.order_by(TableSession.id.desc()).first()
+
+    return last_session
 
 
 def _table_to_dict(customer_table):
     """parses a customer table and its clients into a dict"""
     data = customer_table.to_dict()
 
-    sessions = TableSession.query.filter_by(table_id=customer_table.id)
-    last_session = sessions.order_by(TableSession.id.desc()).first()
+    last_session = _get_table_last_session(customer_table.id)
 
     if last_session:
         data["last_session"] = last_session.to_dict()
@@ -59,3 +71,27 @@ def delete_customer_table(customer_table_id):
     db.session.delete(customer_table)
     db.session.commit()
     return jsonify({"success": "table deleted"}), 202
+
+
+@tables_bp.route("/<int:customer_table_id>/session", methods=["GET"])
+def customer_table_get_session_or_create(customer_table_id):
+    customer_table = CustomerTable.query.get_or_404(customer_table_id)
+
+    last_session = _get_table_last_session(customer_table.id)  # may return None
+
+    if last_session == None or last_session.closed:  # create a new session
+        data = {
+            "closed": False,
+            "demands": [],
+            "table": customer_table,
+            "table_id": customer_table.id,
+            "url": None,  # url will be generated on .create()
+        }
+        last_session = table_session_builder(**data)
+        last_session.create()
+
+    front_base_url = get_config("FRONT_BASE_URL")
+
+    redirect_to_url = f"{front_base_url}/table/{last_session.url}"
+
+    return redirect(redirect_to_url, code=302)

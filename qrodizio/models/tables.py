@@ -1,7 +1,8 @@
 from sqlalchemy_serializer import SerializerMixin
-from qrodizio.ext.database import db
+from uuid import uuid1
 
-from qrodizio.qrcode import qrcode_builder
+from qrodizio.ext.database import db
+from qrodizio.qrcode import qrcode_builder, qrcode_table_url_builder
 
 
 class TableSession(db.Model, SerializerMixin):
@@ -19,10 +20,17 @@ class TableSession(db.Model, SerializerMixin):
     table = db.relationship("CustomerTable", back_populates="sessions")
 
     def create(self):
+        if self.url == None:
+            self.url = self.generate_url()
+
         db.session.add(self)
         db.session.commit()
 
         return self
+
+    def generate_url(self):
+        part = str(uuid1())
+        return f"{self.table_id}-{part}"
 
 
 class CustomerTable(db.Model, SerializerMixin):
@@ -41,7 +49,8 @@ class CustomerTable(db.Model, SerializerMixin):
         db.session.add(self)
         db.session.commit()
 
-        self.qrcode = qrcode_builder(f"Table-{self.id}")
+        url = qrcode_table_url_builder(self.id)
+        self.qrcode = qrcode_builder(url)
 
         db.session.add(self)
         db.session.commit()

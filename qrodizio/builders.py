@@ -89,14 +89,20 @@ def customer_tables_builder(**customer_table_atrrs):
         del customer_table_atrrs["sessions"]
 
         for session_data in sessions:
-            session = TableSession()
-
-            for key in session_data.keys():
-                setattr(session, key, session_data[key])
-
+            session = table_session_builder(**session_data)
             customer_table.sessions.append(session)
 
     for key in customer_table_atrrs.keys():
         setattr(customer_table, key, customer_table_atrrs[key])
 
     return customer_table
+
+
+def table_session_builder(**table_session_attrs):
+    session = TableSession()
+
+    for key in table_session_attrs.keys():
+        setattr(session, key, table_session_attrs[key])
+
+    return session
+

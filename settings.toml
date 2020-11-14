@@ -24,9 +24,13 @@ EXTENSIONS = [
 #]
 DEBUG = true
 SQLALCHEMY_DATABASE_URI = "postgres://postgres:postgres@db/qrodizio_development"
+BACK_BASE_URL = "http://localhost:5000"
+FRONT_BASE_URL = "http://localhost:8080"
 
 [testing]
 SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
+BACK_BASE_URL = "http://localhost:5000"
+FRONT_BASE_URL = "http://localhost:8080"
 
 #[production]
 #SQLALCHEMY_DATABASE_URI = 'sqlite:///production.db'

@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, abort, request
 from qrodizio.ext.database import db
 from qrodizio.models.tables import CustomerTable, TableSession
+from qrodizio.ext.authentication import auth_required
 from qrodizio.builders import customer_tables_builder
 
 sessions_bp = Blueprint("sessions", __name__, url_prefix="/sessions")
@@ -41,3 +42,17 @@ def get_single_demand_by_url(url):
     session = _session_to_dict(query, has_demads=True)
 
     return jsonify({"session": session}), 200
+
+@sessions_bp.route("/<int:id>", methods=["PUT"])
+@auth_required()
+def update_table_session(current_employee, id):
+    table = TableSession.query.get_or_404(id)
+    status = request.json["closed"]
+    
+    table.closed = status
+    db.session.add(table)
+    db.session.commit()
+
+    return jsonify({"table": table.to_dict()}), 200
+
+    

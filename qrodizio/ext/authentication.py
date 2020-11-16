@@ -80,8 +80,11 @@ def auth_required(role=EmployeeRole.basic):
                 return jsonify({"error": "expired token"}), 401
             except UserUnauthorizedException as e:
                 return jsonify({"error": "User unauthorized"}), e.status_code
-            except Exception:
-                return jsonify({"error": "invalid token"}), 401
+            except Exception as e:
+                print("<>" * 80)
+                print(e)
+                print("<>" * 80)
+                return jsonify({"error": "Internal server error"}), e.code
 
         return wrapper
 

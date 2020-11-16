@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, abort, request
 from qrodizio.ext.database import db
 from qrodizio.models.tables import CustomerTable, TableSession
 from qrodizio.builders import customer_tables_builder
+from qrodizio.builders import tables_sessions_builder
 
 sessions_bp = Blueprint("sessions", __name__, url_prefix="/sessions")
 
@@ -30,6 +31,20 @@ def get_single_demand_by_id(id):
 
     return jsonify({"session": session}), 200
 
+@sessions_bp.route("/", methods=["POST"])
+def create_session():
+    url = request.json.get("url")
+    closed = request.json.get("closed")
+    table_id = request.json.get("table_id")
+
+    table_sessions = tables_sessions_builder(
+        url=url,
+        closed=closed,
+        table_id=table_id
+    )
+    table_sessions.create()
+
+    return jsonify({"table_sessions": "ok"}), 201
 
 @sessions_bp.route("/url/<url>", methods=["GET"])
 def get_single_demand_by_url(url):

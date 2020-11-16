@@ -6,6 +6,7 @@ from .qrcode import qrcode_bp
 from .demands import demands_bp
 from .customer_tables import tables_bp
 from .tables_sessions import sessions_bp
+from .payments import payments_bp
 
 
 def init_app(app):
@@ -17,3 +18,4 @@ def init_app(app):
     app.register_blueprint(demands_bp)
     app.register_blueprint(tables_bp)
     app.register_blueprint(sessions_bp)
+    app.register_blueprint(payments_bp)

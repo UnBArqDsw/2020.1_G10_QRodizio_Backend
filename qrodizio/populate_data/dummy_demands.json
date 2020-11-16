@@ -3,35 +3,30 @@
     {
       "quantity": 1,
       "status": "waiting",
-      "customer": "O carinha que mora logo ali",
       "item": "Morango com Chocolate",
       "session_id": 1
     },
     {
       "quantity": 1,
       "status": "processing",
-      "customer": "Berranteiro matador de onça",
       "item": "Banofe",
       "session_id": 1
     },
     {
       "quantity": 1,
       "status": "waiting",
-      "customer": "Berranteiro matador de onça",
       "item": "Romeu e Julieta",
       "session_id": 1
     },
     {
       "quantity": 3,
       "status": "done",
-      "customer": "O carinha que mora logo ali",
       "item": "Kaizer",
       "session_id": 1
     },
     {
       "quantity": 1,
       "status": "done",
-      "customer": "Berranteiro matador de onça",
       "item": "Skol",
       "session_id": 1
     }

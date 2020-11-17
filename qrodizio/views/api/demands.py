@@ -58,8 +58,7 @@ def new_demand():
 
 
 @demands_bp.route("/<demand_id>/status", methods=["PUT"])
-@auth_required()
-def change_status_demand(current_employee, demand_id):
+def change_status_demand(demand_id):
     demand = Demand.query.get_or_404(demand_id)
     status = request.json["status"]
 

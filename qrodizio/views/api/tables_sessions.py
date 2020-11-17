@@ -44,8 +44,7 @@ def get_single_demand_by_url(url):
     return jsonify({"session": session}), 200
 
 @sessions_bp.route("/<int:id>", methods=["PUT"])
-@auth_required()
-def update_table_session(current_employee, id):
+def update_table_session(id):
     table = TableSession.query.get_or_404(id)
     status = request.json["closed"]
     

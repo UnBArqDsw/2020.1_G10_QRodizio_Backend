@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, abort, request
 from qrodizio.ext.database import db
 from qrodizio.models.tables import CustomerTable, TableSession
+from qrodizio.models.demands import Demand
+
 from qrodizio.ext.authentication import auth_required
 from qrodizio.builders import customer_tables_builder
 
@@ -53,5 +55,14 @@ def update_table_session(id):
     db.session.commit()
 
     return jsonify({"table": table.to_dict()}), 200
+
+@sessions_bp.route("/<int:id>/close", methods=["GET"])
+def end_session_and_get_total(id):
+    
+    demand_query = Demand.query.filter_by(session_id=id).first()
+
+    print(demand_query.total_value())
+
+    return jsonify({"table": demand_query.total_value()}), 200
 
     

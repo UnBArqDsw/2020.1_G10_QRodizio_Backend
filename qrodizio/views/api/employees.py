@@ -4,6 +4,7 @@ from qrodizio.ext.database import db
 from qrodizio.ext.authentication import auth_required
 from qrodizio.models.users import Employee, EmployeeRole
 from qrodizio.builders import employee_builder
+from qrodizio.utils.dbutils import add_commit_session, delete_commit_session
 
 employees_bp = Blueprint("employees", __name__, url_prefix="/employees")
 
@@ -29,8 +30,7 @@ def get_single_employee(current_employee, employee_id):
 def delete_employee(current_employee, employee_id):
     employee = Employee.query.get_or_404(employee_id)
 
-    db.session.delete(employee)
-    db.session.commit()
+    delete_commit_session(db, employee)
 
     return jsonify({"deleted": "employee deleted"}), 202
 
@@ -50,8 +50,6 @@ def update_employee(current_employee, employee_id):
     employee = Employee.query.get_or_404(employee_id)
 
     employee = employee_builder(employee=employee, **request.json)
-
-    db.session.add(employee)
-    db.session.commit()
-
+    add_commit_session(db, employee)
+    
     return jsonify({"success": "employee updated"}), 200

@@ -3,6 +3,8 @@ from qrodizio.ext.authentication import auth_required
 from qrodizio.models.demands import Demand, DemandStatus
 from qrodizio.builders import demand_builder
 from qrodizio.ext.database import db
+from qrodizio.utils.dbutils import add_commit_session, delete_commit_session
+
 
 
 demands_bp = Blueprint("demands", __name__, url_prefix="/demands")
@@ -26,8 +28,7 @@ def list_all_demand_status():
 
 
 @demands_bp.route("/<demand_status>", methods=["GET"])
-@auth_required()
-def list_demands_by_status(current_employee, demand_status):
+def list_demands_by_status(demand_status):
     demand_query = Demand.query.filter_by(status=demand_status)
 
     demands = [demand.to_dict() for demand in demand_query]
@@ -63,8 +64,7 @@ def change_status_demand(demand_id):
     status = request.json["status"]
 
     demand.status = status
-    db.session.add(demand)
-    db.session.commit()
+    add_commit_session(db, demand)
 
     return jsonify({"demand": demand.to_dict()}), 202
 
@@ -77,7 +77,7 @@ def cancel_demand(demand_id):
         return jsonify({"error": "Demand status is not waiting"}), 406
 
     demand.status = DemandStatus.canceled
-    db.session.add(demand)
-    db.session.commit()
+    add_commit_session(db, demand)
 
     return jsonify({"success": "demand canceled"}), 202
+

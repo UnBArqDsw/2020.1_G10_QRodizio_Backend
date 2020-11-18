@@ -1,5 +1,5 @@
 import json
-
+from qrodizio.ext.database import db
 
 def get_user_token(client, email, password):
     response = client.post(

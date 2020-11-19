@@ -58,11 +58,12 @@ def update_table_session(id):
 
 @sessions_bp.route("/<int:id>/close", methods=["GET"])
 def end_session_and_get_total(id):
+    demand_query = Demand.query.filter_by(session_id=id)
+    demands = [demand.to_dict() for demand in demand_query]
+    total = 0
+    for demand in demands: 
+        total = total + (demand['item']['value'] * demand['quantity'])
     
-    demand_query = Demand.query.filter_by(session_id=id).first()
-
-    print(demand_query.total_value())
-
-    return jsonify({"table": demand_query.total_value()}), 200
+    return jsonify({"table": total}), 200
 
     

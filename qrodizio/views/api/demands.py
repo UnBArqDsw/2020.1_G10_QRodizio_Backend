@@ -3,7 +3,7 @@ from qrodizio.ext.authentication import auth_required
 from qrodizio.models.demands import Demand, DemandStatus
 from qrodizio.builders import demand_builder
 from qrodizio.ext.database import db
-from qrodizio.utils.dbutils import add_commit_session, delete_commit_session
+from qrodizio.utils.dbutils import dbFacade
 
 
 
@@ -64,7 +64,7 @@ def change_status_demand(demand_id):
     status = request.json["status"]
 
     demand.status = status
-    add_commit_session(db, demand)
+    dbFacade.add_commit_session(db, demand)
 
     return jsonify({"demand": demand.to_dict()}), 202
 
@@ -77,7 +77,7 @@ def cancel_demand(demand_id):
         return jsonify({"error": "Demand status is not waiting"}), 406
 
     demand.status = DemandStatus.canceled
-    add_commit_session(db, demand)
+    dbFacade.add_commit_session(db, demand)
 
     return jsonify({"success": "demand canceled"}), 202
 

@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, abort, request
 from qrodizio.models.menus import Menu, Item
 from qrodizio.builders import menus_builder
 from qrodizio.ext.database import db
-from qrodizio.utils.dbutils import add_commit_session, delete_commit_session
+from qrodizio.utils.dbutils import dbFacade
 
 menus_bp = Blueprint("menus", __name__, url_prefix="/menus")
 
@@ -84,7 +84,7 @@ def add_item_menu(menu_id):
         id=menu_id, name=name, description=description, is_daily=is_daily, items=items
     )
     
-    add_commit_session(db, menu)
+    dbFacade.add_commit_session(db, menu)
 
     return jsonify({"menu": _menu_to_dict(menu)}), 202
 
@@ -101,7 +101,7 @@ def edit_menu(menu_id):
         id=menu_id, name=name, description=description, is_daily=is_daily, items=items
     )
     
-    add_commit_session(db, menu)
+    dbFacade.add_commit_session(db, menu)
     
     if menu.is_daily:
         _verify_and_update_is_daily(menu)
@@ -112,7 +112,7 @@ def edit_menu(menu_id):
 @menus_bp.route("/<int:menu_id>", methods=["DELETE"])
 def delete_menu(menu_id):
     menu = Menu.query.get_or_404(menu_id)
-    delete_commit_session(db, menu)
+    dbFacade.delete_commit_session(db, menu)
     
     return jsonify({"success": "menu deleted"}), 202
 
@@ -125,6 +125,6 @@ def delete_item_menu(menu_id, item_id):
     if item not in menu.items:
         return jsonify({"error": "Item does not belong to menu"}), 406
 
-    delete_commit_session(db, item)
+    dbFacade.delete_commit_session(db, item)
     
     return jsonify({"success": "menu item deleted"}), 202

@@ -5,7 +5,7 @@ from qrodizio.ext.configuration import get_config
 
 from qrodizio.models.tables import CustomerTable, TableSession
 from qrodizio.builders import customer_tables_builder, table_session_builder
-from qrodizio.utils.dbutils import add_commit_session, delete_commit_session
+from qrodizio.utils.dbutils import dbFacade
 
 tables_bp = Blueprint("tables", __name__, url_prefix="/tables")
 
@@ -70,7 +70,7 @@ def create_customer_table():
 def delete_customer_table(customer_table_id):
     customer_table = CustomerTable.query.get_or_404(customer_table_id)
     
-    delete_commit_session(db, customer_table)
+    dbFacade.delete_commit_session(db, customer_table)
 
     return jsonify({"success": "table deleted"}), 202
 

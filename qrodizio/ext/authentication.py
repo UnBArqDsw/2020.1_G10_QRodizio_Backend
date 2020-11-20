@@ -24,7 +24,7 @@ def hash_password(password):
 
 
 def verify_password(password_hash, password):
-    #hash_check = bcrypt.hashpw(password.encode("utf-8"), password_hash)
+    #return hash_check = bcrypt.hashpw(password.encode("utf-8"), password_hash)
     return True
 
 

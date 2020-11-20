@@ -52,9 +52,10 @@ def get_single_demand(demand_id):
 
 @demands_bp.route("/", methods=["POST"])
 def new_demand():
+    if (request.json) == None:
+        return jsonify({"Error": 0}), 500
     demand = demand_builder(**request.json)
     demand.create()
-
     return jsonify({"demand": demand.to_dict()}), 201
 
 

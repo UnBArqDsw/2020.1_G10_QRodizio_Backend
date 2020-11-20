@@ -68,6 +68,12 @@ def change_status_demand(demand_id):
 
     return jsonify({"demand": demand.to_dict()}), 202
 
+@demands_bp.route("/<demand_id>", methods=["DELETE"])
+def delete_demand(demand_id):
+    demand = Demand.query.get_or_404(demand_id)
+    dbFacade.delete_commit_session(db, demand)
+
+    return jsonify({"sucess":"deleted demand"}), 202
 
 @demands_bp.route("/<demand_id>/cancel", methods=["PUT"])
 def cancel_demand(demand_id):

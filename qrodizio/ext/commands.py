@@ -4,7 +4,15 @@ from qrodizio.populate_data import (
     get_menus,
     get_demands,
     get_customer_tables,
+    get_payments_demand,
 )
+
+
+def drop_and_populate():
+    """Creates database"""
+    db.drop_all()
+    db.create_all()
+    populate_all
 
 
 def create_db():
@@ -57,23 +65,38 @@ def populate_customer_tables():
     db.session.bulk_save_objects(customer_tables)
     db.session.commit()
 
+def populate_payments():
+    payments = get_payments_demand()
+    db.session.bulk_save_objects(payments)
+    db.session.commit()
+
 
 def populate_all():
     populate_employees()
     populate_customer_tables()
     populate_menus()
     populate_demands()
+    populate_payments()
+
+
+def dev_populate():
+    drop_db()
+    create_db()
+    populate_all()
 
 
 def init_app(app):
     commands = [
         create_db,
+        drop_and_populate,
         drop_db,
         populate_employees,
         populate_menus,
         populate_demands,
         populate_customer_tables,
+        populate_payments,
         populate_all,
+        dev_populate,
     ]
 
     # add multiple commands in a bulk

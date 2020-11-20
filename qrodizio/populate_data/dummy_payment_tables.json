@@ -1,0 +1,9 @@
+{
+  "payments_demands": [
+    {
+    "table_id": 1, 
+    "pay_method": "money", 
+    "session_id": 1
+    }
+  ]
+}

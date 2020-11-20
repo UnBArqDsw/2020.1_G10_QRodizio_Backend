@@ -2,6 +2,7 @@ from qrodizio.models.menus import Menu, Item
 from qrodizio.models.users import Employee
 from qrodizio.models.demands import Demand, DemandStatus
 from qrodizio.models.tables import CustomerTable, TableSession
+from qrodizio.models.payments import PaymentsDemand
 from qrodizio.ext.authentication import hash_password
 
 
@@ -51,10 +52,9 @@ def menus_builder(**menu_attrs):
 def demand_builder(**demand_attrs):
     quantity = demand_attrs.get("quantity", 1)
     status = demand_attrs.get("status", DemandStatus.waiting)
-    customer = demand_attrs["customer"]
     item_id = demand_attrs.get("item_id", None)
     session_id = demand_attrs.get("session_id", None)
-
+    
     if item_id:
         item = Item.query.get(item_id)
     else:
@@ -64,9 +64,9 @@ def demand_builder(**demand_attrs):
     demand = Demand(
         quantity=quantity,
         status=status,
-        customer=customer,
         item_id=item.id,
         session_id=session_id,
+        
     )
 
     return demand
@@ -97,7 +97,7 @@ def customer_tables_builder(**customer_table_atrrs):
 
     return customer_table
 
-
+  
 def table_session_builder(**table_session_attrs):
     session = TableSession()
 
@@ -106,3 +106,20 @@ def table_session_builder(**table_session_attrs):
 
     return session
 
+
+def payments_demand_builder(**table_payment_atrrs):
+    table_payment = PaymentsDemand()
+
+    table_payment.table_id = table_payment_atrrs["table_id"] 
+    table_payment.pay_method = table_payment_atrrs["pay_method"] 
+    table_payment.session_id = table_payment_atrrs["session_id"]
+    
+    return table_payment
+
+def tables_sessions_builder(**table_payment_atrrs):
+    table_sessions = TableSession()
+    table_sessions.url = table_payment_atrrs["url"]
+    table_sessions.closed = table_payment_atrrs["closed"]
+    table_sessions.table_id = table_payment_atrrs["table_id"]
+
+    return table_sessions

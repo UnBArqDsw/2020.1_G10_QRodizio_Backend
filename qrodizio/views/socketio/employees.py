@@ -53,11 +53,36 @@ def call_for_assistance(url):
         emit("frontend_employee_called", "Table session not found", json=True)
         return
 
+    #So manda msg
     emit("frontend_employee_called", "Employee called", json=True)  # nofity table
 
+    #Notifica
     emit(  # notify employees
         "frontend_call_for_employee_on_table",
         {"session": query.to_dict()},
         json=True,
+        broadcast=True,
+    )
+
+@socketio.on("response_for_assistence")
+def response_for_assistence(url):
+    query = TableSession.query.filter_by(url=url).first()
+
+    if query == None:
+        print("<>" * 80)
+        print("Table session not found")
+        print("<>" * 80)
+
+        # nofity table
+        emit("frontend_employee_called", "Table session not found", json=False)
+        return
+
+    #So manda msg
+    emit("frontend_employee_called", "O cliente agradece", json=True)  # nofity table
+
+    emit(  # notify employees
+        "frontend_not_call_for_employee_on_table",
+        {"session": query.to_dict()},
+        json=False,
         broadcast=True,
     )

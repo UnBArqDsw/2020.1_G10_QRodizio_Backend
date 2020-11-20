@@ -84,21 +84,28 @@ def _find_item_or_create_one(name):
 def customer_tables_builder(**customer_table_atrrs):
     customer_table = CustomerTable()
 
-    sessions_data = customer_table_atrrs["sessions"]
-    del customer_table_atrrs["sessions"]
+    if "sessions" in customer_table_atrrs:
+        sessions = customer_table_atrrs["sessions"]
+        del customer_table_atrrs["sessions"]
 
-    for session_data in sessions_data:
-        session = TableSession()
-
-        for key in session_data.keys():
-            setattr(session, key, session_data[key])
-
-        customer_table.sessions.append(session)
+        for session_data in sessions:
+            session = table_session_builder(**session_data)
+            customer_table.sessions.append(session)
 
     for key in customer_table_atrrs.keys():
         setattr(customer_table, key, customer_table_atrrs[key])
 
     return customer_table
+
+  
+def table_session_builder(**table_session_attrs):
+    session = TableSession()
+
+    for key in table_session_attrs.keys():
+        setattr(session, key, table_session_attrs[key])
+
+    return session
+
 
 def payments_demand_builder(**table_payment_atrrs):
     table_payment = PaymentsDemand()

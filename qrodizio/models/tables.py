@@ -18,6 +18,15 @@ class TableSession(db.Model, SerializerMixin):
         db.Integer, db.ForeignKey("customer_tables.id"), nullable=False
     )
     table = db.relationship("CustomerTable", back_populates="sessions")
+    payment = db.relationship("PaymentsDemand")
+
+    def get_total(self):
+        value = 0
+
+        for demand in self.demands:
+            value += demand.total_value()
+
+        return self.value
 
     def create(self):
         if self.url == None:
@@ -38,12 +47,14 @@ class CustomerTable(db.Model, SerializerMixin):
     serialize_rules = (
         "-sessions",
         "-qrcode",
+        "-payment",
     )
 
     id = db.Column(db.Integer, primary_key=True)
     qrcode = db.Column(db.Text, nullable=True)
     identifier = db.Column(db.String(80), unique=True, nullable=False)
     sessions = db.relationship("TableSession")
+    payments = db.relationship("PaymentsDemand")
 
     def create(self):
         db.session.add(self)

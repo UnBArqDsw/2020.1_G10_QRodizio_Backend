@@ -18,7 +18,11 @@ class Menu(db.Model, SerializerMixin):
     name = db.Column(db.String(60), nullable=False)
     description = db.Column(db.String(140), nullable=True)
     is_daily = db.Column(db.Boolean, default=False)
-    items = db.relationship("Item", secondary=association_table, back_populates="menus")
+    items = db.relationship(
+        "Item",
+        secondary=association_table,
+        back_populates="menus",
+    )
 
     def create(self):
         db.session.add(self)
@@ -39,7 +43,10 @@ class Item(db.Model, SerializerMixin):
     name = db.Column(db.String(80), nullable=False, unique=True, index=True)
     description = db.Column(db.String(140), nullable=True)
     value = db.Column(db.Float(2), nullable=False)
-    demands = db.relationship("Demand")
+    demands = db.relationship(
+        "Demand",
+        cascade="all, delete-orphan",
+    )
 
     def create(self):
         db.session.add(self)

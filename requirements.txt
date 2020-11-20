@@ -9,3 +9,5 @@ Flask-Cors==3.0.9
 bcrypt==3.2.0
 PyJWT==1.4.2
 qrcode[pil]==6.1
+eventlet==0.29.1
+Flask-SocketIO==4.3.1

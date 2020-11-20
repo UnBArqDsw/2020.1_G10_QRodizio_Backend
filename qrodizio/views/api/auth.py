@@ -53,5 +53,6 @@ def auth_loggin_employee():
     }
 
     token = jwt.encode(payload, get_secret_key())
+    user = employee.to_dict()
 
-    return jsonify({"token": token.decode("utf-8")}), 200
+    return jsonify({"token": token.decode("utf-8"), "user": user}), 200

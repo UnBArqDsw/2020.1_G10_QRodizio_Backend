@@ -4,31 +4,36 @@
       "quantity": 1,
       "status": "waiting",
       "item": "Morango com Chocolate",
-      "session_id": 1
+      "session_id": 1,
+      "customer": "Jaojao"
     },
     {
       "quantity": 1,
       "status": "processing",
       "item": "Banofe",
-      "session_id": 1
+      "session_id": 1,
+      "customer": "Jaojao"
     },
     {
       "quantity": 1,
       "status": "waiting",
       "item": "Romeu e Julieta",
-      "session_id": 1
+      "session_id": 1,
+      "customer": "Jaojao"
     },
     {
       "quantity": 3,
       "status": "done",
       "item": "Kaizer",
-      "session_id": 1
+      "session_id": 1,
+      "customer": "Jaojao"
     },
     {
       "quantity": 1,
       "status": "done",
       "item": "Skol",
-      "session_id": 1
+      "session_id": 1,
+      "customer": "Jaojao"
     }
   ]
 }

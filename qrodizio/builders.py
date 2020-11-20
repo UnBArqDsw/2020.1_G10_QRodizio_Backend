@@ -54,7 +54,8 @@ def demand_builder(**demand_attrs):
     status = demand_attrs.get("status", DemandStatus.waiting)
     item_id = demand_attrs.get("item_id", None)
     session_id = demand_attrs.get("session_id", None)
-    
+    customer = demand_attrs.get("customer")
+
     if item_id:
         item = Item.query.get(item_id)
     else:
@@ -66,7 +67,7 @@ def demand_builder(**demand_attrs):
         status=status,
         item_id=item.id,
         session_id=session_id,
-        
+        customer=customer
     )
 
     return demand

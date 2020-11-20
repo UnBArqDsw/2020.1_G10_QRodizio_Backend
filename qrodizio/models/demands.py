@@ -20,12 +20,12 @@ class Demand(db.Model, SerializerMixin):
     )
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"), nullable=False)
     item = db.relationship("Item", back_populates="demands")
-    
+    customer = db.Column(db.String(80), unique=False, nullable=False)
     session_id = db.Column(
         db.Integer, db.ForeignKey("tables_sessions.id"), nullable=False
     )
     table_session = db.relationship("TableSession", back_populates="demands")
-    
+
     def create(self):
         db.session.add(self)
         db.session.commit()

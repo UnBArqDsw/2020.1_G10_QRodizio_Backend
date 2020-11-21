@@ -21,10 +21,6 @@ Backend do projeto [QRodizio](https://github.com/UnBArqDsw/2020.1_G10_QRodizio)
 
 Aplicação feita em python com o uso do microframework [flask](https://flask.palletsprojects.com)
 
-## Screenshots
-
-Adicione 3 ou mais screenshots do projeto em termos de interface e funcionamento.
-
 ## Instalação
 
 **Linguagens**: Python<br>
@@ -72,11 +68,3 @@ Rodando aplicação:
 
 - Com docker: sudo docker-compose up
 - Com Virtualenv: flask run
-
-## Vídeo
-
-Adicione 1 ou mais vídeos com a execução do projeto final.
-
-## Outros
-
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
